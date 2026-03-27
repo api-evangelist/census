@@ -1,0 +1,42 @@
+aid: census
+name: Census
+description: >-
+  Census is a reverse ETL platform that syncs data from data warehouses to
+  SaaS applications via a unified data activation layer.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Unified API
+  - Reverse ETL
+  - Data Activation
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/census/refs/heads/main/apis.yml
+created: '2026-03-27'
+modified: '2026-03-27'
+specificationVersion: '0.19'
+apis:
+  - aid: census:census
+    name: Census
+    description: >-
+      Census is a reverse ETL platform that syncs data from data warehouses
+      to SaaS applications via a unified data activation layer.
+    humanURL: https://www.getcensus.com/
+    tags:
+      - Unified API
+      - Reverse ETL
+      - Data Activation
+    properties:
+      - type: Documentation
+        url: https://docs.getcensus.com/
+      - type: Getting Started
+        url: https://docs.getcensus.com/basics/getting-started
+common:
+  - type: Website
+    url: https://www.getcensus.com/
+  - type: Documentation
+    url: https://docs.getcensus.com/
+  - type: GitHub Organization
+    url: https://github.com/sutrolabs
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
