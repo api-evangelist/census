@@ -6,9 +6,9 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Unified API
-  - Reverse ETL
   - Data Activation
+  - Reverse ETL
+  - Unified API
 url: >-
   https://raw.githubusercontent.com/api-evangelist/census/refs/heads/main/apis.yml
 created: '2026-03-27'
@@ -22,9 +22,9 @@ apis:
       to SaaS applications via a unified data activation layer.
     humanURL: https://www.getcensus.com/
     tags:
-      - Unified API
-      - Reverse ETL
       - Data Activation
+      - Reverse ETL
+      - Unified API
     properties:
       - type: Documentation
         url: https://docs.getcensus.com/
