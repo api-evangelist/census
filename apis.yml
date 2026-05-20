@@ -75,6 +75,8 @@ apis:
       partners, letting end users configure destinations and syncs from within
       a host application via hosted URLs.
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/getcensus
   - type: Website
     url: https://www.getcensus.com/
   - type: Documentation
