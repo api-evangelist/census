@@ -1,0 +1,993 @@
+"""
+Census / Fivetran Activations - Conceptual GraphQL Schema
+No native GraphQL endpoint is publicly available; this schema is derived from
+the Census REST API surface (https://docs.getcensus.com/api-reference/) and
+the Fivetran Activations API reference
+(https://fivetran.com/docs/activations/rest-api/api-reference/introduction).
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar DateTime
+scalar JSON
+scalar URL
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum SyncStatus {
+  PENDING
+  QUEUED
+  WORKING
+  COMPLETED
+  FAILED
+  CANCELLED
+  PAUSED
+}
+
+enum SyncRunStatus {
+  PENDING
+  QUEUED
+  WORKING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum SyncTriggerType {
+  SCHEDULED
+  MANUAL
+  API
+  WEBHOOK
+}
+
+enum ScheduleFrequency {
+  CONTINUOUS
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+enum MappingOperation {
+  UPSERT
+  UPDATE
+  CREATE
+  DELETE
+  MIRROR
+}
+
+enum FieldType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  DATE
+  DATETIME
+  ARRAY
+  OBJECT
+  JSON
+}
+
+enum DestinationType {
+  SALESFORCE
+  HUBSPOT
+  MARKETO
+  GOOGLE_ADS
+  FACEBOOK_ADS
+  INTERCOM
+  ZENDESK
+  SLACK
+  SNOWFLAKE
+  BIGQUERY
+  REDSHIFT
+  DATABRICKS
+  CUSTOM
+}
+
+enum SourceType {
+  SNOWFLAKE
+  BIGQUERY
+  REDSHIFT
+  DATABRICKS
+  POSTGRESQL
+  MYSQL
+  CUSTOM
+}
+
+enum SourceObjectType {
+  TABLE
+  VIEW
+  MODEL
+  SEGMENT
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
+enum WebhookEvent {
+  SYNC_COMPLETED
+  SYNC_FAILED
+  SYNC_STARTED
+  SYNC_PAUSED
+  RUN_COMPLETED
+  RUN_FAILED
+}
+
+enum TokenScope {
+  READ
+  WRITE
+  ADMIN
+}
+
+# ---------------------------------------------------------------------------
+# Core Domain Types
+# ---------------------------------------------------------------------------
+
+"""
+Represents an active or historical sync between a source and a destination.
+"""
+type Sync {
+  id: ID!
+  name: String!
+  label: String
+  status: SyncStatus!
+  paused: Boolean!
+  disabled: Boolean!
+  source: Source!
+  sourceObject: SourceObject!
+  destination: Destination!
+  destinationObject: DestinationObject!
+  schedule: Schedule
+  trigger: SyncTrigger
+  mappings: [FieldMapping!]!
+  identityMapping: IdentityMapping
+  arrayMappings: [ArrayMapping!]
+  relationMappings: [RelationMapping!]
+  mirrorConfig: MirrorConfig
+  operation: MappingOperation!
+  lastRunAt: DateTime
+  lastSuccessfulRunAt: DateTime
+  nextRunAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  runs(first: Int, after: String, status: SyncRunStatus): SyncRunConnection!
+  logs(first: Int, after: String): SyncLogConnection!
+  alertConfigurations: [AlertConfiguration!]
+  webhooks: [Webhook!]
+  workspace: Workspace!
+}
+
+"""
+Represents a single execution instance of a sync.
+"""
+type SyncRun {
+  id: ID!
+  sync: Sync!
+  status: SyncRunStatus!
+  triggerType: SyncTriggerType!
+  recordsProcessed: Int
+  recordsSucceeded: Int
+  recordsFailed: Int
+  recordsSkipped: Int
+  errorCode: String
+  errorMessage: String
+  startedAt: DateTime
+  completedAt: DateTime
+  durationSeconds: Int
+  report: RunReport
+  logs(first: Int, after: String): SyncLogConnection!
+}
+
+"""
+Summary report generated after a sync run completes.
+"""
+type RunReport {
+  id: ID!
+  syncRun: SyncRun!
+  totalRecords: Int!
+  createdRecords: Int!
+  updatedRecords: Int!
+  deletedRecords: Int!
+  failedRecords: Int!
+  skippedRecords: Int!
+  errorSamples: [String!]
+  generatedAt: DateTime!
+}
+
+"""
+Log entry produced during a sync or sync run.
+"""
+type SyncLog {
+  id: ID!
+  syncRunId: ID!
+  level: AlertSeverity!
+  message: String!
+  details: JSON
+  occurredAt: DateTime!
+}
+
+"""
+Current status snapshot for a sync.
+"""
+type SyncStatus2 {
+  syncId: ID!
+  status: SyncStatus!
+  lastRunStatus: SyncRunStatus
+  lastRunAt: DateTime
+  nextRunAt: DateTime
+  recordsProcessedTotal: Int
+  recordsFailedTotal: Int
+}
+
+# ---------------------------------------------------------------------------
+# Source
+# ---------------------------------------------------------------------------
+
+"""
+A data warehouse or database source configured in Census.
+"""
+type Source {
+  id: ID!
+  name: String!
+  type: SourceType!
+  connectionDetails: JSON
+  objects(first: Int, after: String): SourceObjectConnection!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  workspace: Workspace!
+}
+
+"""
+A table, view, model, or segment within a source.
+"""
+type SourceObject {
+  id: ID!
+  name: String!
+  label: String
+  objectType: SourceObjectType!
+  source: Source!
+  attributes: [SourceAttribute!]!
+  columns: [ColumnMeta!]!
+  previewData: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A named attribute (column) available on a source object.
+"""
+type SourceAttribute {
+  id: ID!
+  name: String!
+  label: String
+  fieldType: FieldType!
+  isPrimaryKey: Boolean!
+  isNullable: Boolean!
+  sampleValues: [String!]
+  sourceObject: SourceObject!
+}
+
+"""
+Metadata about a column in a source object.
+"""
+type ColumnMeta {
+  name: String!
+  dataType: String!
+  fieldType: FieldType!
+  isPrimaryKey: Boolean!
+  isNullable: Boolean!
+  description: String
+}
+
+# ---------------------------------------------------------------------------
+# Destination
+# ---------------------------------------------------------------------------
+
+"""
+A SaaS application or database destination configured in Census.
+"""
+type Destination {
+  id: ID!
+  name: String!
+  type: DestinationType!
+  label: String
+  connectionDetails: JSON
+  objects(first: Int, after: String): DestinationObjectConnection!
+  customDestinationSpec: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  workspace: Workspace!
+}
+
+"""
+An object type (e.g. Contact, Lead, Account) within a destination.
+"""
+type DestinationObject {
+  id: ID!
+  name: String!
+  label: String
+  destination: Destination!
+  attributes: [DestinationAttribute!]!
+  supportedOperations: [MappingOperation!]!
+  createdAt: DateTime!
+}
+
+"""
+A named attribute (field) available on a destination object.
+"""
+type DestinationAttribute {
+  id: ID!
+  name: String!
+  label: String
+  fieldType: FieldType!
+  isRequired: Boolean!
+  isIdentifier: Boolean!
+  isCreateable: Boolean!
+  isUpdateable: Boolean!
+  destinationObject: DestinationObject!
+}
+
+# ---------------------------------------------------------------------------
+# Mappings
+# ---------------------------------------------------------------------------
+
+"""
+A basic field-level mapping from a source attribute to a destination attribute.
+"""
+type FieldMapping {
+  id: ID!
+  sync: Sync!
+  sourceAttribute: SourceAttribute
+  destinationAttribute: DestinationAttribute!
+  mappingType: String!
+  isIdentifier: Boolean!
+  isMandatory: Boolean!
+}
+
+"""
+The identity (primary key) mapping for a sync that determines record matching.
+"""
+type IdentityMapping {
+  id: ID!
+  sync: Sync!
+  sourceAttribute: SourceAttribute!
+  destinationAttribute: DestinationAttribute!
+}
+
+"""
+Mapping configuration for enrichment-style syncs.
+"""
+type EnrichmentSync {
+  id: ID!
+  sync: Sync!
+  enrichmentProvider: String!
+  inputMappings: [FieldMapping!]!
+  outputMappings: [FieldMapping!]!
+}
+
+"""
+A simplified mapping declaration for basic field syncs.
+"""
+type BasicMapping {
+  fromField: String!
+  toField: String!
+  operation: String
+}
+
+"""
+Mapping that handles array/list field expansion from source to destination.
+"""
+type ArrayMapping {
+  id: ID!
+  sync: Sync!
+  sourceAttribute: SourceAttribute!
+  destinationAttribute: DestinationAttribute!
+  itemMappings: [BasicMapping!]!
+}
+
+"""
+A relationship between two destination objects resolved during a sync.
+"""
+type Relation {
+  id: ID!
+  name: String!
+  fromObject: DestinationObject!
+  toObject: DestinationObject!
+  joinAttribute: DestinationAttribute!
+}
+
+"""
+Mapping that resolves a relation between source data and a related destination object.
+"""
+type RelationMapping {
+  id: ID!
+  sync: Sync!
+  relation: Relation!
+  sourceAttribute: SourceAttribute!
+  lookupAttribute: DestinationAttribute!
+}
+
+"""
+Configuration for a mirror sync that maintains exact parity between source and destination.
+"""
+type MirrorConfig {
+  id: ID!
+  sync: Sync!
+  fullRefresh: Boolean!
+  deleteMissing: Boolean!
+  primaryKeySourceAttribute: SourceAttribute!
+}
+
+# ---------------------------------------------------------------------------
+# Segments
+# ---------------------------------------------------------------------------
+
+"""
+A computed audience segment built from source data.
+"""
+type Segment {
+  id: ID!
+  name: String!
+  description: String
+  sourceObject: SourceObject!
+  filters: [SegmentFilter!]!
+  estimatedSize: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  workspace: Workspace!
+}
+
+"""
+A filter group applied to a segment.
+"""
+type SegmentFilter {
+  id: ID!
+  segment: Segment!
+  operator: String!
+  conditions: [FilterCondition!]!
+}
+
+"""
+An individual filter condition within a segment filter group.
+"""
+type FilterCondition {
+  id: ID!
+  segmentFilter: SegmentFilter!
+  attribute: SourceAttribute!
+  operator: String!
+  value: JSON!
+}
+
+# ---------------------------------------------------------------------------
+# Scheduling & Triggering
+# ---------------------------------------------------------------------------
+
+"""
+Schedule definition that controls when a sync runs automatically.
+"""
+type Schedule {
+  id: ID!
+  sync: Sync!
+  frequency: ScheduleFrequency!
+  cronExpression: String
+  timezone: String
+  startAt: DateTime
+  nextRunAt: DateTime
+}
+
+"""
+Trigger configuration that can initiate a sync programmatically.
+"""
+type SyncTrigger {
+  id: ID!
+  sync: Sync!
+  triggerType: SyncTriggerType!
+  webhookUrl: String
+  apiKey: String
+  enabled: Boolean!
+}
+
+# ---------------------------------------------------------------------------
+# Model Definition
+# ---------------------------------------------------------------------------
+
+"""
+A SQL model definition stored in Census for use as a source object.
+"""
+type ModelDefinition {
+  id: ID!
+  name: String!
+  sql: String!
+  source: Source!
+  columns: [ColumnMeta!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  workspace: Workspace!
+}
+
+# ---------------------------------------------------------------------------
+# Destination Sync (Sync Destination cross-reference)
+# ---------------------------------------------------------------------------
+
+"""
+Cross-reference between a sync and destination details for reporting purposes.
+"""
+type SyncDestination {
+  syncId: ID!
+  sync: Sync!
+  destination: Destination!
+  destinationObject: DestinationObject!
+  operationType: MappingOperation!
+}
+
+# ---------------------------------------------------------------------------
+# Alerting & Notifications
+# ---------------------------------------------------------------------------
+
+"""
+Configuration for alert thresholds and notification channels on a sync.
+"""
+type AlertConfiguration {
+  id: ID!
+  sync: Sync!
+  severity: AlertSeverity!
+  condition: String!
+  threshold: Float
+  notifyEmails: [String!]
+  notifyWebhook: String
+  enabled: Boolean!
+  createdAt: DateTime!
+}
+
+"""
+A notification event generated when an alert condition is met.
+"""
+type Notification {
+  id: ID!
+  alertConfiguration: AlertConfiguration!
+  message: String!
+  severity: AlertSeverity!
+  sentAt: DateTime!
+  acknowledgedAt: DateTime
+  resolvedAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Webhooks
+# ---------------------------------------------------------------------------
+
+"""
+A webhook endpoint registered to receive Census event callbacks.
+"""
+type Webhook {
+  id: ID!
+  url: URL!
+  secret: String
+  events: [WebhookEvent!]!
+  enabled: Boolean!
+  sync: Sync
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  workspace: Workspace!
+}
+
+# ---------------------------------------------------------------------------
+# Organization & Users
+# ---------------------------------------------------------------------------
+
+"""
+The top-level organizational entity in Census.
+"""
+type Organization {
+  id: ID!
+  name: String!
+  slug: String!
+  plan: String
+  workspaces: [Workspace!]!
+  users: [User!]!
+  invitations: [Invitation!]!
+  apiTokens: [APIToken!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A workspace (scoped environment) within an organization.
+"""
+type Workspace {
+  id: ID!
+  name: String!
+  slug: String!
+  organization: Organization!
+  syncs(first: Int, after: String, status: SyncStatus): SyncConnection!
+  sources(first: Int, after: String): SourceConnection!
+  destinations(first: Int, after: String): DestinationConnection!
+  segments(first: Int, after: String): SegmentConnection!
+  models(first: Int, after: String): ModelDefinitionConnection!
+  webhooks: [Webhook!]!
+  members: [User!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A user account in Census.
+"""
+type User {
+  id: ID!
+  email: String!
+  firstName: String
+  lastName: String
+  fullName: String
+  role: String
+  organization: Organization!
+  workspaces: [Workspace!]!
+  apiTokens: [APIToken!]!
+  createdAt: DateTime!
+  lastLoginAt: DateTime
+}
+
+"""
+A pending invitation to join an organization or workspace.
+"""
+type Invitation {
+  id: ID!
+  email: String!
+  role: String!
+  status: InvitationStatus!
+  invitedBy: User!
+  organization: Organization!
+  workspace: Workspace
+  expiresAt: DateTime
+  createdAt: DateTime!
+}
+
+"""
+An API authentication token scoped to an organization or workspace.
+"""
+type APIToken {
+  id: ID!
+  name: String!
+  scope: TokenScope!
+  prefix: String!
+  lastUsedAt: DateTime
+  expiresAt: DateTime
+  createdAt: DateTime!
+  user: User
+  organization: Organization!
+}
+
+# ---------------------------------------------------------------------------
+# Connections (Relay-style pagination)
+# ---------------------------------------------------------------------------
+
+type SyncConnection {
+  edges: [SyncEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SyncEdge {
+  node: Sync!
+  cursor: String!
+}
+
+type SyncRunConnection {
+  edges: [SyncRunEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SyncRunEdge {
+  node: SyncRun!
+  cursor: String!
+}
+
+type SyncLogConnection {
+  edges: [SyncLogEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SyncLogEdge {
+  node: SyncLog!
+  cursor: String!
+}
+
+type SourceConnection {
+  edges: [SourceEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SourceEdge {
+  node: Source!
+  cursor: String!
+}
+
+type SourceObjectConnection {
+  edges: [SourceObjectEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SourceObjectEdge {
+  node: SourceObject!
+  cursor: String!
+}
+
+type DestinationConnection {
+  edges: [DestinationEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DestinationEdge {
+  node: Destination!
+  cursor: String!
+}
+
+type DestinationObjectConnection {
+  edges: [DestinationObjectEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DestinationObjectEdge {
+  node: DestinationObject!
+  cursor: String!
+}
+
+type SegmentConnection {
+  edges: [SegmentEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SegmentEdge {
+  node: Segment!
+  cursor: String!
+}
+
+type ModelDefinitionConnection {
+  edges: [ModelDefinitionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ModelDefinitionEdge {
+  node: ModelDefinition!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ---------------------------------------------------------------------------
+# Root Operations
+# ---------------------------------------------------------------------------
+
+type Query {
+  organization(id: ID!): Organization
+  workspace(id: ID!): Workspace
+  sync(id: ID!): Sync
+  syncRun(id: ID!): SyncRun
+  syncs(workspaceId: ID!, first: Int, after: String, status: SyncStatus): SyncConnection!
+  source(id: ID!): Source
+  sources(workspaceId: ID!, first: Int, after: String): SourceConnection!
+  sourceObject(id: ID!): SourceObject
+  destination(id: ID!): Destination
+  destinations(workspaceId: ID!, first: Int, after: String): DestinationConnection!
+  destinationObject(id: ID!): DestinationObject
+  segment(id: ID!): Segment
+  segments(workspaceId: ID!, first: Int, after: String): SegmentConnection!
+  model(id: ID!): ModelDefinition
+  models(workspaceId: ID!, first: Int, after: String): ModelDefinitionConnection!
+  user(id: ID!): User
+  users(organizationId: ID!): [User!]!
+  me: User
+  apiTokens(organizationId: ID!): [APIToken!]!
+  webhooks(workspaceId: ID!): [Webhook!]!
+  alertConfigurations(syncId: ID!): [AlertConfiguration!]!
+  notifications(organizationId: ID!, first: Int, after: String): [Notification!]!
+  runReport(syncRunId: ID!): RunReport
+  invitations(organizationId: ID!): [Invitation!]!
+}
+
+type Mutation {
+  createSync(input: CreateSyncInput!): Sync!
+  updateSync(id: ID!, input: UpdateSyncInput!): Sync!
+  deleteSync(id: ID!): Boolean!
+  pauseSync(id: ID!): Sync!
+  resumeSync(id: ID!): Sync!
+  triggerSync(id: ID!): SyncRun!
+  cancelSyncRun(id: ID!): SyncRun!
+
+  createSource(input: CreateSourceInput!): Source!
+  updateSource(id: ID!, input: UpdateSourceInput!): Source!
+  deleteSource(id: ID!): Boolean!
+
+  createDestination(input: CreateDestinationInput!): Destination!
+  updateDestination(id: ID!, input: UpdateDestinationInput!): Destination!
+  deleteDestination(id: ID!): Boolean!
+
+  createSegment(input: CreateSegmentInput!): Segment!
+  updateSegment(id: ID!, input: UpdateSegmentInput!): Segment!
+  deleteSegment(id: ID!): Boolean!
+
+  createModel(input: CreateModelInput!): ModelDefinition!
+  updateModel(id: ID!, input: UpdateModelInput!): ModelDefinition!
+  deleteModel(id: ID!): Boolean!
+
+  createWebhook(input: CreateWebhookInput!): Webhook!
+  updateWebhook(id: ID!, input: UpdateWebhookInput!): Webhook!
+  deleteWebhook(id: ID!): Boolean!
+
+  createAlertConfiguration(input: CreateAlertConfigurationInput!): AlertConfiguration!
+  updateAlertConfiguration(id: ID!, input: UpdateAlertConfigurationInput!): AlertConfiguration!
+  deleteAlertConfiguration(id: ID!): Boolean!
+
+  createAPIToken(input: CreateAPITokenInput!): APIToken!
+  revokeAPIToken(id: ID!): Boolean!
+
+  inviteUser(input: InviteUserInput!): Invitation!
+  cancelInvitation(id: ID!): Boolean!
+  updateUserRole(userId: ID!, workspaceId: ID!, role: String!): User!
+  removeUserFromWorkspace(userId: ID!, workspaceId: ID!): Boolean!
+}
+
+type Subscription {
+  syncStatusChanged(syncId: ID!): Sync!
+  syncRunUpdated(syncId: ID!): SyncRun!
+  notificationReceived(organizationId: ID!): Notification!
+}
+
+# ---------------------------------------------------------------------------
+# Input Types
+# ---------------------------------------------------------------------------
+
+input CreateSyncInput {
+  name: String!
+  workspaceId: ID!
+  sourceId: ID!
+  sourceObjectId: ID!
+  destinationId: ID!
+  destinationObjectId: ID!
+  operation: MappingOperation!
+  scheduleId: ID
+  paused: Boolean
+}
+
+input UpdateSyncInput {
+  name: String
+  paused: Boolean
+  disabled: Boolean
+  scheduleId: ID
+  operation: MappingOperation
+}
+
+input CreateSourceInput {
+  name: String!
+  workspaceId: ID!
+  type: SourceType!
+  connectionDetails: JSON!
+}
+
+input UpdateSourceInput {
+  name: String
+  connectionDetails: JSON
+}
+
+input CreateDestinationInput {
+  name: String!
+  workspaceId: ID!
+  type: DestinationType!
+  connectionDetails: JSON!
+}
+
+input UpdateDestinationInput {
+  name: String
+  connectionDetails: JSON
+}
+
+input CreateSegmentInput {
+  name: String!
+  description: String
+  workspaceId: ID!
+  sourceObjectId: ID!
+  filters: [SegmentFilterInput!]
+}
+
+input UpdateSegmentInput {
+  name: String
+  description: String
+  filters: [SegmentFilterInput!]
+}
+
+input SegmentFilterInput {
+  operator: String!
+  conditions: [FilterConditionInput!]!
+}
+
+input FilterConditionInput {
+  attributeId: ID!
+  operator: String!
+  value: JSON!
+}
+
+input CreateModelInput {
+  name: String!
+  workspaceId: ID!
+  sourceId: ID!
+  sql: String!
+}
+
+input UpdateModelInput {
+  name: String
+  sql: String
+}
+
+input CreateWebhookInput {
+  workspaceId: ID!
+  url: URL!
+  secret: String
+  events: [WebhookEvent!]!
+  syncId: ID
+}
+
+input UpdateWebhookInput {
+  url: URL
+  secret: String
+  events: [WebhookEvent!]
+  enabled: Boolean
+}
+
+input CreateAlertConfigurationInput {
+  syncId: ID!
+  severity: AlertSeverity!
+  condition: String!
+  threshold: Float
+  notifyEmails: [String!]
+  notifyWebhook: String
+}
+
+input UpdateAlertConfigurationInput {
+  severity: AlertSeverity
+  condition: String
+  threshold: Float
+  notifyEmails: [String!]
+  notifyWebhook: String
+  enabled: Boolean
+}
+
+input CreateAPITokenInput {
+  name: String!
+  organizationId: ID!
+  scope: TokenScope!
+  expiresAt: DateTime
+}
+
+input InviteUserInput {
+  organizationId: ID!
+  workspaceId: ID
+  email: String!
+  role: String!
+}
