@@ -1,0 +1,576 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Activations REST API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sources",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List sources"
+        },
+        {
+          "info": {
+            "name": "Create a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/sources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a source"
+        },
+        {
+          "info": {
+            "name": "Get a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a source"
+        },
+        {
+          "info": {
+            "name": "Update a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/sources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a source"
+        },
+        {
+          "info": {
+            "name": "Delete a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/sources/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a source"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Destinations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List destinations"
+        },
+        {
+          "info": {
+            "name": "Create a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a destination"
+        },
+        {
+          "info": {
+            "name": "Get a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a destination"
+        },
+        {
+          "info": {
+            "name": "Update a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a destination"
+        },
+        {
+          "info": {
+            "name": "Delete a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a destination"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/models",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List models"
+        },
+        {
+          "info": {
+            "name": "Create a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/models",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a model"
+        },
+        {
+          "info": {
+            "name": "Get a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a model"
+        },
+        {
+          "info": {
+            "name": "Update a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a model"
+        },
+        {
+          "info": {
+            "name": "Delete a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/models/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a model"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Syncs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List syncs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List syncs"
+        },
+        {
+          "info": {
+            "name": "Create a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a sync"
+        },
+        {
+          "info": {
+            "name": "Get a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a sync"
+        },
+        {
+          "info": {
+            "name": "Update a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/syncs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a sync"
+        },
+        {
+          "info": {
+            "name": "Delete a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/syncs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a sync"
+        },
+        {
+          "info": {
+            "name": "Trigger a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs/:id/trigger",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Trigger a sync run"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SyncRuns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sync runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List sync runs"
+        },
+        {
+          "info": {
+            "name": "Get a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a sync run"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Segments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List audience segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/segments"
+          },
+          "docs": "List audience segments"
+        },
+        {
+          "info": {
+            "name": "Create a segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/segments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a segment"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workspaces in the organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/workspaces"
+          },
+          "docs": "List workspaces in the organization"
+        },
+        {
+          "info": {
+            "name": "Create a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/workspaces",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a workspace"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
