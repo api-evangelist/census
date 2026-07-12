@@ -71,6 +71,12 @@ apis:
     partners, letting end users configure destinations and syncs from within a host
     application via hosted URLs.
 common:
+- type: TrustCenter
+  url: security/census-trust-center.yml
+- type: DomainSecurity
+  url: security/census-domain-security.yml
+- type: Authentication
+  url: authentication/census-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/getcensus
 - type: Website

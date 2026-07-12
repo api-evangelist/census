@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/census-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Workspace access token or organization personal access token
+  sources:
+  - openapi/census-openapi.yml
