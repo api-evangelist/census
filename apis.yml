@@ -71,6 +71,8 @@ apis:
     partners, letting end users configure destinations and syncs from within a host
     application via hosted URLs.
 common:
+- type: AgenticAccess
+  url: agentic-access/census-agentic-access.yml
 - type: TrustCenter
   url: security/census-trust-center.yml
 - type: DomainSecurity
