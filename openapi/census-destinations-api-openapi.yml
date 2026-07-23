@@ -1,0 +1,138 @@
+openapi: 3.1.0
+info:
+  title: Census Activations REST Destinations API
+  description: 'The Census Activations REST API (formerly the Census Management API, now branded
+
+    as Fivetran Activations) provides programmatic access to manage workspaces,
+
+    sources, destinations, models, syncs, sync runs, and segments. The API is split
+
+    into Workspace APIs (authenticated via workspace access tokens) and Organization
+
+    APIs (authenticated via personal access tokens). This best-effort OpenAPI is
+
+    derived from the public documentation at
+
+    https://fivetran.com/docs/activations/rest-api/api-reference/introduction.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Census (Fivetran)
+    url: https://www.getcensus.com/
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: US Census API endpoint
+- url: https://app-eu.getcensus.com/api/v1
+  description: EU Census API endpoint
+security:
+- bearerAuth: []
+tags:
+- name: Destinations
+  description: Destination connections to operational systems
+paths:
+  /destinations:
+    get:
+      tags:
+      - Destinations
+      summary: List destinations
+      operationId: listDestinations
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Paginated destination list
+    post:
+      tags:
+      - Destinations
+      summary: Create a destination
+      operationId: createDestination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Destination'
+      responses:
+        '201':
+          description: Destination created
+  /destinations/{id}:
+    get:
+      tags:
+      - Destinations
+      summary: Get a destination
+      operationId: getDestination
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Destination
+    patch:
+      tags:
+      - Destinations
+      summary: Update a destination
+      operationId: updateDestination
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Destination'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      tags:
+      - Destinations
+      summary: Delete a destination
+      operationId: deleteDestination
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Deleted
+components:
+  parameters:
+    PerPage:
+      in: query
+      name: per_page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+    Id:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  schemas:
+    Destination:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          description: Destination connector type (salesforce, hubspot, etc.)
+        credentials:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace access token or organization personal access token

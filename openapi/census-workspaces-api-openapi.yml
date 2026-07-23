@@ -1,0 +1,69 @@
+openapi: 3.1.0
+info:
+  title: Census Activations REST Destinations Workspaces API
+  description: 'The Census Activations REST API (formerly the Census Management API, now branded
+
+    as Fivetran Activations) provides programmatic access to manage workspaces,
+
+    sources, destinations, models, syncs, sync runs, and segments. The API is split
+
+    into Workspace APIs (authenticated via workspace access tokens) and Organization
+
+    APIs (authenticated via personal access tokens). This best-effort OpenAPI is
+
+    derived from the public documentation at
+
+    https://fivetran.com/docs/activations/rest-api/api-reference/introduction.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Census (Fivetran)
+    url: https://www.getcensus.com/
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: US Census API endpoint
+- url: https://app-eu.getcensus.com/api/v1
+  description: EU Census API endpoint
+security:
+- bearerAuth: []
+tags:
+- name: Workspaces
+  description: Organization-level workspace management
+paths:
+  /workspaces:
+    get:
+      tags:
+      - Workspaces
+      summary: List workspaces in the organization
+      operationId: listWorkspaces
+      responses:
+        '200':
+          description: Workspace list
+    post:
+      tags:
+      - Workspaces
+      summary: Create a workspace
+      operationId: createWorkspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                notification_emails:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Workspace created
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace access token or organization personal access token

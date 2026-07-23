@@ -1,0 +1,62 @@
+openapi: 3.1.0
+info:
+  title: Census Activations REST Destinations Segments API
+  description: 'The Census Activations REST API (formerly the Census Management API, now branded
+
+    as Fivetran Activations) provides programmatic access to manage workspaces,
+
+    sources, destinations, models, syncs, sync runs, and segments. The API is split
+
+    into Workspace APIs (authenticated via workspace access tokens) and Organization
+
+    APIs (authenticated via personal access tokens). This best-effort OpenAPI is
+
+    derived from the public documentation at
+
+    https://fivetran.com/docs/activations/rest-api/api-reference/introduction.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Census (Fivetran)
+    url: https://www.getcensus.com/
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: US Census API endpoint
+- url: https://app-eu.getcensus.com/api/v1
+  description: EU Census API endpoint
+security:
+- bearerAuth: []
+tags:
+- name: Segments
+  description: Audience segments
+paths:
+  /segments:
+    get:
+      tags:
+      - Segments
+      summary: List audience segments
+      operationId: listSegments
+      responses:
+        '200':
+          description: Segment list
+    post:
+      tags:
+      - Segments
+      summary: Create a segment
+      operationId: createSegment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Segment created
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace access token or organization personal access token

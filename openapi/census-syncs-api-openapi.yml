@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: Census Activations REST Destinations Syncs API
+  description: 'The Census Activations REST API (formerly the Census Management API, now branded
+
+    as Fivetran Activations) provides programmatic access to manage workspaces,
+
+    sources, destinations, models, syncs, sync runs, and segments. The API is split
+
+    into Workspace APIs (authenticated via workspace access tokens) and Organization
+
+    APIs (authenticated via personal access tokens). This best-effort OpenAPI is
+
+    derived from the public documentation at
+
+    https://fivetran.com/docs/activations/rest-api/api-reference/introduction.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Census (Fivetran)
+    url: https://www.getcensus.com/
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: US Census API endpoint
+- url: https://app-eu.getcensus.com/api/v1
+  description: EU Census API endpoint
+security:
+- bearerAuth: []
+tags:
+- name: Syncs
+  description: Sync configurations
+paths:
+  /syncs:
+    get:
+      tags:
+      - Syncs
+      summary: List syncs
+      operationId: listSyncs
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Paginated sync list
+    post:
+      tags:
+      - Syncs
+      summary: Create a sync
+      operationId: createSync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sync'
+      responses:
+        '201':
+          description: Sync created
+  /syncs/{id}:
+    get:
+      tags:
+      - Syncs
+      summary: Get a sync
+      operationId: getSync
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Sync
+    patch:
+      tags:
+      - Syncs
+      summary: Update a sync
+      operationId: updateSync
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sync'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      tags:
+      - Syncs
+      summary: Delete a sync
+      operationId: deleteSync
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Deleted
+  /syncs/{id}/trigger:
+    post:
+      tags:
+      - Syncs
+      summary: Trigger a sync run
+      operationId: triggerSync
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                force_full_sync:
+                  type: boolean
+      responses:
+        '202':
+          description: Sync run triggered
+components:
+  schemas:
+    Sync:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        operation:
+          type: string
+          enum:
+          - upsert
+          - update
+          - insert
+          - mirror
+          - delete
+        source_attributes:
+          type: object
+        destination_attributes:
+          type: object
+        schedule:
+          type: object
+          properties:
+            frequency:
+              type: string
+              enum:
+              - never
+              - continuous
+              - quarter_hourly
+              - hourly
+              - daily
+              - weekly
+              - expression
+            day:
+              type: string
+            hour:
+              type: integer
+            minute:
+              type: integer
+        paused:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    PerPage:
+      in: query
+      name: per_page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+    Id:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace access token or organization personal access token
