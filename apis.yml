@@ -2,7 +2,20 @@ aid: census
 url: https://raw.githubusercontent.com/api-evangelist/census/refs/heads/main/apis.yml
 name: Census
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/census.png
 tags:
 - Connectors
 - Data Activation
@@ -37,11 +50,11 @@ apis:
     type: GettingStarted
   - url: graphql/census-graphql.md
     type: GraphQL
-  description: The Census Activations REST API (formerly Census Management API) lets
-    teams programmatically manage reverse ETL pipelines, sources, models, destinations,
-    syncs, and sync runs. The API is region-scoped and authenticated with personal
-    access tokens, with organization-level resources (workspaces, users, invitations)
-    and workspace-level resources (datasets, destinations, syncs).
+  description: >-
+    The Census Activations REST API (formerly Census Management API) lets teams programmatically manage
+    reverse ETL pipelines, sources, models, destinations, syncs, and sync runs. The API is region-scoped
+    and authenticated with personal access tokens, with organization-level resources (workspaces, users,
+    invitations) and workspace-level resources (datasets, destinations, syncs).
 - aid: census:census-custom-destinations-api
   name: Census Custom Destinations API
   tags:
@@ -52,24 +65,90 @@ apis:
   properties:
   - url: https://fivetran.com/docs/activations/rest-api/custom-destinations/destination-spec
     type: Documentation
-  description: Custom Destinations API lets partners declare the type of data a destination
-    can process, the operations allowed on that data, and the loading mechanism so
-    that Activations can orchestrate loads into any custom SaaS or application system.
+  description: >-
+    Custom Destinations API lets partners declare the type of data a destination can process, the operations
+    allowed on that data, and the loading mechanism so that Activations can orchestrate loads into any
+    custom SaaS or application system.
 - aid: census:census-connect-links-api
   name: Census Connect Links (Powered by Fivetran)
   tags:
   - Embedded
   - Connect Links
   - Powered by Fivetran
-  humanURL: https://fivetran.com/docs/activations/rest-api/activations-in-powered-by-fivetran/features/connect-links/connect-links
+  humanURL: >-
+    https://fivetran.com/docs/activations/rest-api/activations-in-powered-by-fivetran/features/connect-links/connect-links
   properties:
-  - url: https://fivetran.com/docs/activations/rest-api/activations-in-powered-by-fivetran/features/connect-links/connect-links
+  - url: >-
+      https://fivetran.com/docs/activations/rest-api/activations-in-powered-by-fivetran/features/connect-links/connect-links
     type: Documentation
   - url: https://fivetran.com/docs/activations/rest-api/embedded
     type: Overview
-  description: Connect Links enable embedded Activations flows for Powered by Fivetran
-    partners, letting end users configure destinations and syncs from within a host
-    application via hosted URLs.
+  description: >-
+    Connect Links enable embedded Activations flows for Powered by Fivetran partners, letting end users
+    configure destinations and syncs from within a host application via hosted URLs.
+- aid: census:census-destinations-api
+  name: Census Destinations API
+  description: Destination connections to operational systems
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Destinations
+  properties:
+  - type: OpenAPI
+    url: openapi/census-destinations-api-openapi.yml
+- aid: census:census-models-api
+  name: Census Models API
+  description: Modeled queries that drive activations
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/census-models-api-openapi.yml
+- aid: census:census-segments-api
+  name: Census Segments API
+  description: Audience segments
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Segments
+  properties:
+  - type: OpenAPI
+    url: openapi/census-segments-api-openapi.yml
+- aid: census:census-sources-api
+  name: Census Sources API
+  description: Source connections to data warehouses
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/census-sources-api-openapi.yml
+- aid: census:census-syncruns-api
+  name: Census SyncRuns API
+  description: Sync executions
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - SyncRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/census-syncruns-api-openapi.yml
+- aid: census:census-syncs-api
+  name: Census Syncs API
+  description: Sync configurations
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Syncs
+  properties:
+  - type: OpenAPI
+    url: openapi/census-syncs-api-openapi.yml
+- aid: census:census-workspaces-api
+  name: Census Workspaces API
+  description: Organization-level workspace management
+  humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
+  tags:
+  - Workspaces
+  properties:
+  - type: OpenAPI
+    url: openapi/census-workspaces-api-openapi.yml
 common:
 - type: AgenticAccess
   url: agentic-access/census-agentic-access.yml
