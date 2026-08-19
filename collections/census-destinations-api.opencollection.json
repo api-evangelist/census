@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Activations REST Destinations API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Destinations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List destinations"
+        },
+        {
+          "info": {
+            "name": "Create a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a destination"
+        },
+        {
+          "info": {
+            "name": "Get a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a destination"
+        },
+        {
+          "info": {
+            "name": "Update a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a destination"
+        },
+        {
+          "info": {
+            "name": "Delete a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/destinations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a destination"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

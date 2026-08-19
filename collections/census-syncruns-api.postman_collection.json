@@ -1,0 +1,218 @@
+{
+  "item": [
+    {
+      "id": "f78f93b0-1e99-45ce-9f4e-81c8a80df165",
+      "name": "SyncRuns",
+      "description": {
+        "content": "Sync executions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8889d339-4c88-41d5-b25d-874d9d39f4f6",
+          "name": "List sync runs",
+          "request": {
+            "name": "List sync runs",
+            "description": {},
+            "url": {
+              "path": [
+                "sync_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "sync_id",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6741170e-0e6a-4304-b9ef-9126efe54cec",
+              "name": "Sync run list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sync_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sync_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65410d05-d33e-42f1-b6e9-91dd81f8a260",
+          "name": "Get a sync run",
+          "request": {
+            "name": "Get a sync run",
+            "description": {},
+            "url": {
+              "path": [
+                "sync_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5eb6633-7d97-456f-bae1-dd721fb69d75",
+              "name": "Sync run",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sync_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.getcensus.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2558394e-e0a7-4483-9784-a4a0916aed4e",
+    "name": "Census Activations REST Destinations SyncRuns API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Census Activations REST API (formerly the Census Management API, now branded\nas Fivetran Activations) provides programmatic access to manage workspaces,\nsources, destinations, models, syncs, sync runs, and segments. The API is split\ninto Workspace APIs (authenticated via workspace access tokens) and Organization\nAPIs (authenticated via personal access tokens). This best-effort OpenAPI is\nderived from the public documentation at\nhttps://fivetran.com/docs/activations/rest-api/api-reference/introduction.\n\n\nContact Support:\n Name: Census (Fivetran)",
+      "type": "text/plain"
+    }
+  }
+}
