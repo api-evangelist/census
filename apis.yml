@@ -26,7 +26,7 @@ tags:
 - Unified API
 created: '2026-03-27'
 modified: '2026-08-08'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 description: Census is a reverse ETL and data activation platform that syncs data from cloud data warehouses
   (Snowflake, BigQuery, Databricks, Redshift) into operational SaaS applications. Census was acquired
   by Fivetran and is now branded as Fivetran Activations, offering a REST API for managing workspaces,
