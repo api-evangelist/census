@@ -23,6 +23,14 @@ tags:
 - Destinations
 - Fivetran Activations
 - Reverse ETL
+- Unified-API
+tags_raw:
+- Connectors
+- Data Activation
+- Data Warehouse
+- Destinations
+- Fivetran Activations
+- Reverse ETL
 - Unified API
 created: '2026-03-27'
 modified: '2026-08-08'
@@ -121,6 +129,8 @@ apis:
   description: Sync executions
   humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
   tags:
+  - Sync Runs
+  tags_raw:
   - SyncRuns
   properties:
   - type: OpenAPI
