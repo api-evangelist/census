@@ -141,7 +141,7 @@ apis:
   description: Sync executions
   humanURL: https://fivetran.com/docs/activations/rest-api/api-reference/introduction
   tags:
-  - SyncRuns
+  - Sync Runs
   tags_raw:
   - SyncRuns
   properties:
