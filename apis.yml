@@ -21,11 +21,12 @@ accessModel:
   try_now: true
   public: false
   label: Freemium · Self-serve signup
-  confidence: high
+  confidence: medium
   source:
   - plans
   - authentication
-  generated: '2026-07-22'
+  - security
+  generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/census.png
 tags:
@@ -47,11 +48,10 @@ tags_raw:
 created: '2026-03-27'
 modified: '2026-08-08'
 specificationVersion: '0.23'
-description: Census is a reverse ETL and data activation platform that syncs data from cloud data warehouses
-  (Snowflake, BigQuery, Databricks, Redshift) into operational SaaS applications. Census was acquired
-  by Fivetran and is now branded as Fivetran Activations, offering a REST API for managing workspaces,
-  datasets, syncs, destinations, and custom destinations, plus embedded Activations (Connect Links) for
-  Powered by Fivetran use cases.
+description: Census is a reverse ETL and data activation platform that syncs data from cloud data warehouses (Snowflake,
+  BigQuery, Databricks, Redshift) into operational SaaS applications. Census was acquired by Fivetran and is now
+  branded as Fivetran Activations, offering a REST API for managing workspaces, datasets, syncs, destinations, and
+  custom destinations, plus embedded Activations (Connect Links) for Powered by Fivetran use cases.
 apis:
 - aid: census:census-activations-api
   name: Census Activations REST API
@@ -69,10 +69,10 @@ apis:
     type: GettingStarted
   - url: graphql/census-graphql.md
     type: GraphQL
-  description: The Census Activations REST API (formerly Census Management API) lets teams programmatically
-    manage reverse ETL pipelines, sources, models, destinations, syncs, and sync runs. The API is region-scoped
-    and authenticated with personal access tokens, with organization-level resources (workspaces, users,
-    invitations) and workspace-level resources (datasets, destinations, syncs).
+  description: The Census Activations REST API (formerly Census Management API) lets teams programmatically manage
+    reverse ETL pipelines, sources, models, destinations, syncs, and sync runs. The API is region-scoped and authenticated
+    with personal access tokens, with organization-level resources (workspaces, users, invitations) and workspace-level
+    resources (datasets, destinations, syncs).
 - aid: census:census-custom-destinations-api
   name: Census Custom Destinations API
   tags:
@@ -83,9 +83,9 @@ apis:
   properties:
   - url: https://fivetran.com/docs/activations/rest-api/custom-destinations/destination-spec
     type: Documentation
-  description: Custom Destinations API lets partners declare the type of data a destination can process,
-    the operations allowed on that data, and the loading mechanism so that Activations can orchestrate
-    loads into any custom SaaS or application system.
+  description: Custom Destinations API lets partners declare the type of data a destination can process, the operations
+    allowed on that data, and the loading mechanism so that Activations can orchestrate loads into any custom SaaS
+    or application system.
 - aid: census:census-connect-links-api
   name: Census Connect Links (Powered by Fivetran)
   tags:
@@ -98,8 +98,8 @@ apis:
     type: Documentation
   - url: https://fivetran.com/docs/activations/rest-api/embedded
     type: Overview
-  description: Connect Links enable embedded Activations flows for Powered by Fivetran partners, letting
-    end users configure destinations and syncs from within a host application via hosted URLs.
+  description: Connect Links enable embedded Activations flows for Powered by Fivetran partners, letting end users
+    configure destinations and syncs from within a host application via hosted URLs.
 - aid: census:census-destinations-api
   name: Census Destinations API
   description: Destination connections to operational systems
@@ -165,12 +165,294 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/census-workspaces-api-openapi.yml
+- aid: census:census-ci-connectors-api
+  name: Census Connectors API
+  description: The Connectors API from Census — 2 operation(s) for connectors.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Connectors
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-connectors-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-datasets-and-models-api
+  name: Census Datasets and Models API
+  description: The Datasets and Models API from Census — 3 operation(s) for datasets and models.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Datasets and Models
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-datasets-and-models-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-destinations-api
+  name: Census Destinations API
+  description: The Destinations API from Census — 3 operation(s) for destinations.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Destinations
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-destinations-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-segments-api
+  name: Census Segments API
+  description: The Segments API from Census — 2 operation(s) for segments.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Segments
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-segments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-sources-api
+  name: Census Sources API
+  description: The Sources API from Census — 3 operation(s) for sources.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-sources-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-sync-runs-api
+  name: Census Sync Runs API
+  description: The Sync Runs API from Census — 3 operation(s) for sync runs.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Sync Runs
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-sync-runs-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
+- aid: census:census-ci-syncs-api
+  name: Census Syncs API
+  description: The Syncs API from Census — 3 operation(s) for syncs.
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  tags:
+  - Syncs
+  properties:
+  - type: OpenAPI
+    url: openapi/census-ci-syncs-api-openapi.yml
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sources
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sources/list-sources
+  - type: PostmanCollection
+    url: collections/census-ci.postman_collection.json
+  - type: OpenCollection
+    url: collections/census-ci.opencollection.json
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/destinations
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/sync-runs
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/models
+  - type: APIReference
+    url: https://developers.getcensus.com/dataset-api/guide
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/connectors
+  - type: Documentation
+    url: https://developers.getcensus.com/api-reference/segments
+  - type: APIReference
+    url: https://developers.getcensus.com/api-reference/segments/list-segments
 common:
 - type: ParentCompany
   url: https://apis.io/providers/fivetran/
   name: Fivetran
   x-relationship: acquired
-  x-evidence: "Census was acquired by Fivetran and is now branded as Fivetran Activations, offering a REST API for managing workspaces, datasets, syncs, destinations, and custom destinations, plus embedded Activations (Connect Links) for Powered by Fivetr"
+  x-evidence: Census was acquired by Fivetran and is now branded as Fivetran Activations, offering a REST API for
+    managing workspaces, datasets, syncs, destinations, and custom destinations, plus embedded Activations (Connect
+    Links) for Powered by Fivetr
 - type: AgenticAccess
   url: agentic-access/census-agentic-access.yml
 - type: TrustCenter
@@ -197,6 +479,8 @@ common:
   url: https://fivetran.com/docs/activations
 - type: Signup
   url: https://www.getcensus.com/
+- type: Documentation
+  url: https://developers.getcensus.com
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
